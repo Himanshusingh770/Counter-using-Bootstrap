@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const App = () => {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalRef = useRef(null);
 
   useEffect(() => {
     let interval;
@@ -23,57 +21,40 @@ const App = () => {
     setIsRunning(!isRunning);
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-
   const resetTimer = () => {
     setIsRunning(false);
     setTimer(0);
   };
 
-  // Close modal when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-      }
-    };
-
-    if (isModalOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isModalOpen]);
-
   return (
     <div className="main-Component">
       <h1>Counter Application</h1>
-      <button className="btn btn-primary" onClick={handleModalOpen}>
+      <button
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#timerModal"
+      >
         Open Modal
       </button>
 
       {/* Modal */}
       <div
-        className={`modal fade ${isModalOpen ? 'show' : ''}`}
-        style={{ display: isModalOpen ? 'block' : 'none' }}
+        className="modal fade"
+        id="timerModal"
         tabIndex="-1"
-        role="dialog"
+        aria-labelledby="timerModalLabel"
+        aria-hidden="true"
       >
-        <div className="modal-dialog" role="document" ref={modalRef}>
+        <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Timer</h5>
-              <button type="button" className="btn-close" onClick={handleModalClose}></button>
+              <h5 className="modal-title" id="timerModalLabel">Timer</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <p>Timer: {timer} seconds</p>
@@ -85,7 +66,11 @@ const App = () => {
               </button>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleModalClose}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>
