@@ -5,33 +5,28 @@ import TimerModal from './Components/TimerModal';
 
 const App = () => {
   const [timer, setTimer] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isTimerRunning, setisTimerRunning] = useState(false);
   let interval; // Declare a variable to hold the interval ID
 
   // Function to manage start, stop, and reset of the timer
   const handleTimerAction = () => {
-    if (isRunning) {
+    if (isTimerRunning) {
       // If the timer is running, stop it
       clearInterval(interval);
-      setIsRunning(false);
+      setisTimerRunning(false);
     } else {
       // If the timer is not running, start the timer
-      if (timer === 0) {
-        // Resetting timer
-        setTimer(0);
-      }
-      // Start the timer
       interval = setInterval(() => {
         setTimer((prev) => prev + 1);
       }, 1000);
-      setIsRunning(true);
+      setisTimerRunning(true);
     }
   };
 
   // Function to reset the timer
   const resetTimer = () => {
     clearInterval(interval);
-    setIsRunning(false);
+    setisTimerRunning(false);
     setTimer(0);
   };
 
@@ -50,7 +45,7 @@ const App = () => {
         timer={timer}
         handleTimerAction={handleTimerAction}
         resetTimer={resetTimer}
-        isRunning={isRunning}
+        isTimerRunning={isTimerRunning}
       />
     </div>
   );
