@@ -1,30 +1,37 @@
 // App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import TimerModal from './Components/TimerModal';
 
 const App = () => {
   const [timer, setTimer] = useState(0);
-  const [isTimerRunning, setisTimerRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+  let interval; // Declare a variable to hold the interval ID
 
-  useEffect(() => {
-    let interval;
-    if (isTimerRunning) {
+  // Function to manage start, stop, and reset of the timer
+  const handleTimerAction = () => {
+    if (isRunning) {
+      // If the timer is running, stop it
+      clearInterval(interval);
+      setIsRunning(false);
+    } else {
+      // If the timer is not running, start the timer
+      if (timer === 0) {
+        // Resetting timer
+        setTimer(0);
+      }
+      // Start the timer
       interval = setInterval(() => {
         setTimer((prev) => prev + 1);
       }, 1000);
-    } else if (!isTimerRunning && timer !== 0) {
-      clearInterval(interval);
+      setIsRunning(true);
     }
-    return () => clearInterval(interval);
-  }, [isTimerRunning]);
-
-  const counterTimer = () => {
-    setisTimerRunning(!isTimerRunning);
   };
 
+  // Function to reset the timer
   const resetTimer = () => {
-    setisTimerRunning(false);
+    clearInterval(interval);
+    setIsRunning(false);
     setTimer(0);
   };
 
@@ -41,9 +48,9 @@ const App = () => {
 
       <TimerModal
         timer={timer}
-        isTimerRunning={isTimerRunning}
-        counterTimer={counterTimer}
+        handleTimerAction={handleTimerAction}
         resetTimer={resetTimer}
+        isRunning={isRunning}
       />
     </div>
   );

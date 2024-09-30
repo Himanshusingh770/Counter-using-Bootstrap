@@ -1,7 +1,7 @@
 // TimerModal.js
 import React from 'react';
 
-const TimerModal = ({ timer, isTimerRunning, counterTimer, resetTimer }) => {
+const TimerModal = ({ timer, isTimerRunning, handleTimerAction, resetTimer }) => {
   return (
     <div
       className="modal fade"
@@ -23,7 +23,7 @@ const TimerModal = ({ timer, isTimerRunning, counterTimer, resetTimer }) => {
           </div>
           <div className="modal-body">
             <p>Timer: {timer} seconds</p>
-            <button className="btn btn-success" onClick={counterTimer}>
+            <button className="btn btn-success" onClick={handleTimerAction}>
               {isTimerRunning ? 'Pause' : 'Start'}
             </button>
             <button className="btn btn-danger m-2" onClick={resetTimer}>
